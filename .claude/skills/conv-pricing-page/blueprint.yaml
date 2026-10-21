@@ -1,0 +1,15 @@
+id: doddle.conv.conv-pricing-page
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "offer-strategist skill for pricing page."
+inputs:
+  - {name: tiers, type: string, required: true, description: "Tiers"}
+outputs:
+  - {name: page, type: markdown, description: "Pricing page"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["frameworks"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: offer-strategist, needs: [run], produces: [page]}
+on_fail: {retry: 1, fallback: manual_review}

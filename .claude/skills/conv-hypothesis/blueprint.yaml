@@ -1,0 +1,14 @@
+id: doddle.conv.conv-hypothesis
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "experiment-lead skill for hypothesis."
+inputs:
+  - {name: observation, type: string, required: true, description: "Observation"}
+outputs:
+  - {name: hypothesis, type: markdown, description: "Hypothesis"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+nodes:
+  - {id: analyze, type: agent, ref: experiment-lead, needs: [inputs], produces: [hypothesis]}
+on_fail: {retry: 1, fallback: manual_review}

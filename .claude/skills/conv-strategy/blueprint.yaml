@@ -1,0 +1,16 @@
+id: doddle.conv.conv-strategy
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "conversion-strategist skill for strategy."
+inputs:
+  - {name: goal, type: string, required: true, description: "Conversion goal"}
+  - {name: metric, type: string, required: false, description: "Primary metric"}
+outputs:
+  - {name: plan, type: markdown, description: "Conversion program plan"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["landing-audit"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: conversion-strategist, needs: [run], produces: [plan]}
+on_fail: {retry: 1, fallback: manual_review}

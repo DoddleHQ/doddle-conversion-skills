@@ -1,0 +1,16 @@
+id: doddle.conv.conv-offer-design
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "offer-strategist skill for offer design."
+inputs:
+  - {name: value, type: string, required: true, description: "Core value"}
+  - {name: price, type: number, required: false, description: "Price"}
+outputs:
+  - {name: offer, type: markdown, description: "Offer design"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["frameworks"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: offer-strategist, needs: [run], produces: [offer]}
+on_fail: {retry: 1, fallback: manual_review}

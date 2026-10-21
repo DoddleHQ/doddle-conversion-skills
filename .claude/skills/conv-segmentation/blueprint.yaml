@@ -1,0 +1,17 @@
+id: doddle.conv.conv-segmentation
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "conversion-strategist skill for segmentation."
+inputs:
+  - {name: data, type: string, required: true, description: "Segment data"}
+outputs:
+  - {name: segments, type: markdown, description: "Conversion segments"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+  - {id: doddle.tool.v1.hubspot.contacts, required: false, fallback: manual_review}
+integrations:
+  - hubspot
+nodes:
+  - {id: analyze, type: agent, ref: conversion-strategist, needs: [inputs], produces: [segments]}
+on_fail: {retry: 1, fallback: manual_review}

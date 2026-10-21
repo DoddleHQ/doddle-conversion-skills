@@ -1,0 +1,22 @@
+{
+  "name": "doddle-conversion-skills",
+  "version": "0.1.0",
+  "description": "Doddle Conversion (CRO) OS — 30 skills and 5 agents for conversion rate optimization (landing pages, offers, A/B testing, UX, personalization, measurement). Deterministic Python toolkit computes A/B significance, sample sizes, landing audits and offer math; skills narrate. Hybrid format.",
+  "author": { "name": "Doddle Team", "url": "https://doddlehq.com" },
+  "homepage": "https://doddlehq.com",
+  "repository": "https://github.com/DoddleHQ/doddle-conversion-skills",
+  "documentation": "https://docs.doddlehq.com",
+  "license": "MIT",
+  "keywords": ["conversion", "cro", "ab-testing", "landing-page", "optimization", "marketing"],
+  "category": "marketing",
+  "tags": ["conversion", "cro", "ab-testing"],
+  "skills": "./.claude/skills",
+  "agents": "./.claude/agents",
+  "main": "README.md",
+  "components": {
+    "skills": { "path": "./.claude/skills", "count": 30, "ids": "doddle.conv.*" },
+    "agents": { "path": "./.claude/agents", "count": 5, "list": ["conversion-strategist", "cro-analyst", "ux-researcher", "experiment-lead", "offer-strategist"] },
+    "toolkit": { "path": "./scripts/doddle_conversion", "cli": "dconv", "python": ">=3.9", "dependencies": "stdlib-only" }
+  },
+  "requirements": { "doddleOS": ">=2.0" }
+}

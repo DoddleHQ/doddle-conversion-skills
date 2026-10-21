@@ -1,0 +1,15 @@
+id: doddle.conv.cro-research
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "ux-researcher skill for research."
+inputs:
+  - {name: page, type: string, required: true, description: "Page or flow"}
+  - {name: evidence, type: file, required: false, description: "User research notes"}
+outputs:
+  - {name: research, type: markdown, description: "Research findings"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+nodes:
+  - {id: analyze, type: agent, ref: ux-researcher, needs: [inputs], produces: [research]}
+on_fail: {retry: 1, fallback: manual_review}

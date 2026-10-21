@@ -1,0 +1,17 @@
+id: doddle.conv.conv-dynamic-content
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "conversion-strategist skill for dynamic content."
+inputs:
+  - {name: page, type: string, required: true, description: "Page"}
+outputs:
+  - {name: plan, type: markdown, description: "Dynamic content plan"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+  - {id: doddle.tool.v1.canva.design, required: false, fallback: manual_review}
+integrations:
+  - canva
+nodes:
+  - {id: analyze, type: agent, ref: conversion-strategist, needs: [inputs], produces: [plan]}
+on_fail: {retry: 1, fallback: manual_review}

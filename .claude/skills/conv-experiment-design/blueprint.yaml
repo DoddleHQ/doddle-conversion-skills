@@ -1,0 +1,19 @@
+id: doddle.conv.conv-experiment-design
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "experiment-lead skill for experiment design."
+inputs:
+  - {name: hypothesis, type: string, required: true, description: "Hypothesis"}
+  - {name: metric, type: string, required: true, description: "Primary metric"}
+outputs:
+  - {name: brief, type: markdown, description: "Experiment brief"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+  - {id: doddle.tool.v1.notion.pages, required: false, fallback: manual_review}
+integrations:
+  - notion
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["frameworks"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: experiment-lead, needs: [run], produces: [brief]}
+on_fail: {retry: 1, fallback: manual_review}

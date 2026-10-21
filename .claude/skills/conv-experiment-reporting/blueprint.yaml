@@ -1,0 +1,19 @@
+id: doddle.conv.conv-experiment-reporting
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "experiment-lead skill for experiment reporting."
+inputs:
+  - {name: control_n, type: number, required: true, description: "Control visitors"}
+  - {name: control_conv, type: number, required: true, description: "Control conversions"}
+  - {name: variant_n, type: number, required: true, description: "Variant visitors"}
+  - {name: variant_conv, type: number, required: true, description: "Variant conversions"}
+outputs:
+  - {name: report, type: markdown, description: "Experiment report"}
+  - {name: envelope, type: json, description: "AB envelope"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["ab-test"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: experiment-lead, needs: [run], produces: [report]}
+on_fail: {retry: 1, fallback: manual_review}

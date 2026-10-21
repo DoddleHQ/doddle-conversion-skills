@@ -1,0 +1,6 @@
+{
+  "name": "doddle-conversion-skills",
+  "owner": { "name": "Doddle Team", "email": "contact@doddlehq.com", "url": "https://doddlehq.com" },
+  "metadata": { "description": "Doddle Conversion OS — 30 independent skills for CRO, backed by a deterministic evidence toolkit", "version": "0.1.0", "updatedAt": "2026-10-21" },
+  "plugins": [{ "name": "doddle-conversion-skills", "source": "./", "description": "Doddle Conversion OS: 30 skills (landing pages, offers, A/B testing, UX, personalization, measurement) with a deterministic CLI.", "author": { "name": "Doddle Team" }, "homepage": "https://doddlehq.com", "repository": "https://github.com/DoddleHQ/doddle-conversion-skills", "documentation": "https://docs.doddlehq.com", "license": "MIT", "keywords": ["conversion", "cro", "ab-testing"], "category": "marketing", "tags": ["conversion", "cro"], "featured": true, "verified": true }]
+}

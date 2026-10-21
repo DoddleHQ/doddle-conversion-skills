@@ -1,0 +1,18 @@
+id: doddle.conv.cro-copy
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "conversion-strategist skill for copy."
+inputs:
+  - {name: page, type: string, required: true, description: "Page"}
+  - {name: offer, type: string, required: false, description: "Offer"}
+outputs:
+  - {name: copy, type: markdown, description: "Conversion copy"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+  - {id: doddle.tool.v1.canva.design, required: false, fallback: manual_review}
+integrations:
+  - canva
+nodes:
+  - {id: analyze, type: agent, ref: conversion-strategist, needs: [inputs], produces: [copy]}
+on_fail: {retry: 1, fallback: manual_review}

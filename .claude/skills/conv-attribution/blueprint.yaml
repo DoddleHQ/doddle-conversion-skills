@@ -1,0 +1,17 @@
+id: doddle.conv.conv-attribution
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "cro-analyst skill for attribution."
+inputs:
+  - {name: window, type: string, required: true, description: "Window"}
+outputs:
+  - {name: report, type: markdown, description: "Attribution report"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+  - {id: doddle.tool.v1.ga4.getReport, required: false, fallback: manual_review}
+integrations:
+  - ga4
+nodes:
+  - {id: analyze, type: agent, ref: cro-analyst, needs: [inputs], produces: [report]}
+on_fail: {retry: 1, fallback: manual_review}

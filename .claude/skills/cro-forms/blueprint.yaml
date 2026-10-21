@@ -1,0 +1,15 @@
+id: doddle.conv.cro-forms
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "ux-researcher skill for forms."
+inputs:
+  - {name: form, type: string, required: true, description: "Form to optimize"}
+outputs:
+  - {name: plan, type: markdown, description: "Form optimization plan"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["frameworks"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: ux-researcher, needs: [run], produces: [plan]}
+on_fail: {retry: 1, fallback: manual_review}

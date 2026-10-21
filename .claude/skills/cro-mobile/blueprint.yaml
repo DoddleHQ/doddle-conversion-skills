@@ -1,0 +1,15 @@
+id: doddle.conv.cro-mobile
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "ux-researcher skill for mobile."
+inputs:
+  - {name: page, type: string, required: true, description: "Page"}
+outputs:
+  - {name: plan, type: markdown, description: "Mobile conversion plan"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["frameworks"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: ux-researcher, needs: [run], produces: [plan]}
+on_fail: {retry: 1, fallback: manual_review}

@@ -1,0 +1,14 @@
+{
+  "name": "doddle-conversion-skills",
+  "version": "0.1.0",
+  "description": "Doddle Conversion (CRO) OS — 30 skills for landing pages, offers, A/B testing, UX and measurement, with a deterministic zero-dependency evidence toolkit.",
+  "main": "README.md",
+  "scripts": { "test": "python3 -m pytest tests -q", "lint": "python3 scripts/lint_pack.py", "demo": "python3 scripts/dconv ab-test --control-n 1000 --control-conv 50 --variant-n 1000 --variant-conv 75 --json" },
+  "repository": { "type": "git", "url": "https://github.com/DoddleHQ/doddle-conversion-skills.git" },
+  "keywords": ["conversion", "cro", "ab-testing", "landing-page", "optimization", "marketing"],
+  "author": "Doddle Team <contact@doddlehq.com>",
+  "license": "MIT",
+  "bugs": { "url": "https://github.com/DoddleHQ/doddle-conversion-skills/issues" },
+  "homepage": "https://doddlehq.com",
+  "files": [".claude/", ".claude-plugin/", "scripts/", "README.md", "LICENSE"]
+}

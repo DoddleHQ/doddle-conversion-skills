@@ -1,0 +1,20 @@
+id: doddle.conv.conv-landing-audit
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "cro-analyst skill for landing audit."
+inputs:
+  - {name: checks, type: string, required: true, description: "Recorded checks JSON"}
+  - {name: page, type: string, required: false, description: "Page name"}
+outputs:
+  - {name: report, type: markdown, description: "Landing audit report"}
+  - {name: envelope, type: json, description: "Audit envelope"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+  - {id: doddle.tool.v1.ga4.getReport, required: false, fallback: manual_review}
+integrations:
+  - ga4
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["landing-audit"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: cro-analyst, needs: [run], produces: [report]}
+on_fail: {retry: 1, fallback: manual_review}

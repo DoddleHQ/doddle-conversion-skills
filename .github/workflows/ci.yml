@@ -1,0 +1,26 @@
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy: { fail-fast: false, matrix: { python-version: ["3.9", "3.12"] } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: ${{ matrix.python-version }} }
+      - name: Install pytest
+        run: python -m pip install --upgrade pip pytest
+      - name: Lint pack
+        run: python scripts/lint_pack.py
+      - name: Run tests
+        run: python -m pytest tests -q
+      - name: Smoke-test the toolkit
+        run: |
+          python scripts/dconv version
+          python scripts/dconv frameworks --name ab-test-brief > /dev/null
+          python scripts/dconv ab-test --control-n 1000 --control-conv 50 --variant-n 1000 --variant-conv 75 --json > /dev/null
+          python scripts/dconv sample-size --baseline 0.05 --mde 0.02 --json > /dev/null
+          python scripts/dconv landing-audit --checks '{"clear_headline":true}' --json > /dev/null
+          python scripts/dconv offer --price 99 --discount 20 --json > /dev/null

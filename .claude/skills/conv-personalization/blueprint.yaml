@@ -1,0 +1,20 @@
+id: doddle.conv.conv-personalization
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "conversion-strategist skill for personalization."
+inputs:
+  - {name: segments, type: string, required: true, description: "Segments"}
+outputs:
+  - {name: plan, type: markdown, description: "Personalization plan"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+  - {id: doddle.tool.v1.hubspot.contacts, required: false, fallback: manual_review}
+  - {id: doddle.tool.v1.clearbit.company, required: false, fallback: manual_review}
+integrations:
+  - hubspot
+  - clearbit
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["frameworks"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: conversion-strategist, needs: [run], produces: [plan]}
+on_fail: {retry: 1, fallback: manual_review}

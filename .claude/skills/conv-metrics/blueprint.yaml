@@ -1,0 +1,20 @@
+id: doddle.conv.conv-metrics
+version: 0.1.0
+kind: skill
+engine: doddle-os>=1.0
+description: "cro-analyst skill for metrics."
+inputs:
+  - {name: checks, type: string, required: false, description: "Checks JSON"}
+  - {name: window, type: string, required: false, description: "Window"}
+outputs:
+  - {name: scorecard, type: markdown, description: "Conversion scorecard"}
+  - {name: envelope, type: json, description: "Audit envelope"}
+tools:
+  - {id: doddle.tool.cli.dconv, required: false, fallback: manual_review}
+  - {id: doddle.tool.v1.ga4.getReport, required: false, fallback: manual_review}
+integrations:
+  - ga4
+nodes:
+  - {id: run, type: tool, ref: doddle.tool.cli.dconv, args: ["landing-audit"], needs: [inputs], produces: [envelope]}
+  - {id: narrate, type: agent, ref: cro-analyst, needs: [run], produces: [scorecard]}
+on_fail: {retry: 1, fallback: manual_review}
